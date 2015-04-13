@@ -1,0 +1,14 @@
+pubs = LOAD '/data/patents/apat63_99.txt' USING PigStorage(',') AS (pid:long, year:long, date:long, ayear:long, country:chararray);
+okpubs = FILTER pubs BY (year == 1990) AND (country == '"US"');
+okpid = FOREACH okpubs GENERATE pid;
+print = LIMIT okpubs 10;
+DUMP print;
+cits = LOAD '/data/patents/cite75_99.txt' USING PigStorage(',') AS (pid:long, cited:long);
+data = JOIN okpid BY pid, cits BY pid;
+print = LIMIT data 10;
+DUMP print;
+grouped = GROUP data BY cited;
+citcnt = FOREACH grouped GENERATE group, COUNT(data) AS count;
+citord = ORDER citcnt BY count DESC;
+topcited = LIMIT citord 10;
+DUMP topcited;

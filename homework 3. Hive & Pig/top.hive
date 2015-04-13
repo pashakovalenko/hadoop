@@ -1,0 +1,6 @@
+SELECT cited, count(1) AS count FROM 
+(SELECT pid FROM apat WHERE (year == 1990) AND (country == '"US"')) a 
+JOIN cite c ON (a.pid == c.pid) 
+GROUP BY cited 
+ORDER BY count DESC 
+LIMIT 10;
