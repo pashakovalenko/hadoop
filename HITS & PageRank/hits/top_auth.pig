@@ -3,6 +3,6 @@ urls = LOAD '/data/sites/lenta.ru/all/urls.txt' USING PigStorage('\t') AS (pid:l
 short = FOREACH diogen GENERATE pid, a;
 data = JOIN short BY pid, urls BY pid;
 sorted = ORDER data BY a DESC;
-STORE sorted INTO 'hits/sorted_hubs/';
+STORE sorted INTO 'hits/sorted_auth/';
 top = LIMIT sorted 30;
 DUMP top;
